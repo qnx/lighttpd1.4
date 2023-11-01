@@ -1,4 +1,9 @@
 #!/usr/bin/env perl
+
+# Copyright (c) 2023, BlackBerry Limited. All Rights Reserved.
+# License: BSD 3-clause (same as lighttpd)
+#
+
 BEGIN {
 	# add current source dir to the include-path
 	# we need this for make distcheck
@@ -1107,6 +1112,7 @@ ok($tf->handle_http($t) == 0, 'Basic-Auth: Valid Auth-token - plain');
 
 SKIP: {
 	skip "no crypt-des under openbsd or MS Visual Studio", 2 if $^O eq 'openbsd' || $tf->{'win32native'};
+	skip "no crypt-des under qnx", 2 if $^O eq 'nto';
 $t->{REQUEST}  = ( <<EOF
 GET /server-config HTTP/1.0
 Host: auth-htpasswd.example.org
@@ -1166,6 +1172,7 @@ SKIP: {
 	skip "no crypt-md5 under cygwin", 1 if $^O eq 'cygwin';
 	skip "no crypt-md5 under darwin", 1 if $^O eq 'darwin';
 	skip "no crypt-md5 under openbsd",1 if $^O eq 'openbsd';
+	skip "no crypt-md5 under qnx",1 if $^O eq 'nto';
 $t->{REQUEST}  = ( <<EOF
 GET /server-config HTTP/1.0
 Host: auth-htpasswd.example.org

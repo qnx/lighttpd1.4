@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023, BlackBerry Limited. All Rights Reserved.
+ * License: BSD 3-clause (same as lighttpd)
+ */
 #include "first.h"
 
 #include "base.h"
@@ -360,6 +364,15 @@ static void server_main_setup_signals (void) {
     sigaction(SIGHUP,  &act, NULL);
     sigaction(SIGALRM, &act, NULL);
     sigaction(SIGUSR1, &act, NULL);
+
+   #ifdef __QNX__
+      /*
+       * In QNX SDP 7.1 SA_RESTART is not supported
+       */
+      #ifndef SA_RESTART
+         #define SA_RESTART 0
+      #endif
+   #endif /* __QNX__ */
 
     /* it should be safe to restart syscalls after SIGCHLD */
     act.sa_flags |= SA_RESTART | SA_NOCLDSTOP;
