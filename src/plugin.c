@@ -131,13 +131,15 @@ int plugins_load(server *srv) {
 			}
 		}
 		if (!load_functions[j].name) {
-			log_error(srv->errh, __FILE__, __LINE__, "%s plugin not found", module);
 			if (srv->srvconf.compat_module_load) {
 				if (buffer_eq_slen(&ds->value, CONST_STR_LEN("mod_deflate")))
 					continue;
 			}
-			if (buffer_eq_slen(&ds->value, CONST_STR_LEN("mod_h2")))
+			if (buffer_eq_slen(&ds->value, CONST_STR_LEN("mod_h2"))) {
+				srv->srvconf.h2proto = 0;
 				continue;
+			}
+			log_error(srv->errh, __FILE__, __LINE__, "%s plugin not found", module);
 			return -1;
 		}
 	}
@@ -180,14 +182,16 @@ int plugins_load(server *srv) {
 	  #ifdef _WIN32
 		buffer_append_string_len(tb, CONST_STR_LEN(".dll"));
 		if (NULL == (lib = LoadLibrary(tb->ptr))) {
-			log_perror(srv->errh, __FILE__, __LINE__,
-			  "LoadLibrary() %s", tb->ptr);
 			if (srv->srvconf.compat_module_load) {
 				if (buffer_eq_slen(module, CONST_STR_LEN("mod_deflate")))
 					continue;
 			}
-			if (buffer_eq_slen(module, CONST_STR_LEN("mod_h2")))
+			if (buffer_eq_slen(module, CONST_STR_LEN("mod_h2"))) {
+				srv->srvconf.h2proto = 0;
 				continue;
+			}
+			log_perror(srv->errh, __FILE__, __LINE__,
+			  "LoadLibrary() %s", tb->ptr);
 			return -1;
 		}
 		buffer_copy_buffer(tb, module);
@@ -206,14 +210,16 @@ int plugins_load(server *srv) {
 		buffer_append_string_len(tb, CONST_STR_LEN(".so"));
 	   #endif
 		if (NULL == (lib = dlopen(tb->ptr, RTLD_NOW|RTLD_GLOBAL))) {
-			log_error(srv->errh, __FILE__, __LINE__,
-			  "dlopen() failed for: %s %s", tb->ptr, dlerror());
 			if (srv->srvconf.compat_module_load) {
 				if (buffer_eq_slen(module, CONST_STR_LEN("mod_deflate")))
 					continue;
 			}
-			if (buffer_eq_slen(module, CONST_STR_LEN("mod_h2")))
+			if (buffer_eq_slen(module, CONST_STR_LEN("mod_h2"))) {
+				srv->srvconf.h2proto = 0;
 				continue;
+			}
+			log_error(srv->errh, __FILE__, __LINE__,
+			  "dlopen() failed for: %s %s", tb->ptr, dlerror());
 			return -1;
 		}
 		buffer_clear(tb);
