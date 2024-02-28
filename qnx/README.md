@@ -2,21 +2,11 @@
 
 **NOTE**: QNX ports are only supported from a **Linux host** operating system
 
-### Install automake/autoconf tools
+### Install dependencies
 
 `sudo apt install automake`
 
-### Clone repository
-
-`git clone git@gitlab.rim.net:qnx/osr/lighttpd1.4.git && cd lighttpd1.4`
-	
-### Checkout corresponding SDP branch
-
-`git checkout qnx-sdp8-master`
-
-or
-
-`git checkout qnx-sdp71-master`
+`sudo apt install pkg-config`
 
 ### Generate GNU build tool ./configure and all needed Makefiles
 
@@ -26,7 +16,7 @@ or
 
 `source <path-to-sdp>/qnxsdp-env.sh`
 
-### Build examples and install asio headers into SDP
+### Build and install lighttpd binaries into SDP
 
 `JLEVEL=$(nproc) make -C qnx/build install`
 
