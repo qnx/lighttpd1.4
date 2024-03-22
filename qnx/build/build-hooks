@@ -10,19 +10,30 @@ blu="\033[1;34m"
 cls="\033[0m"
 
 #
+#    Default basic prefix is /usr/local
+#
+BASIC_PREFIX="/usr/local"
+
+#
 #    QNX specific build configuration nested level
 #
 NESTED_LEVEL="../../.."
 
+#
+#    A prefix path to use on the target.
+#
+PREFIX="${INSTALL_ROOT_nto}/${BASIC_PREFIX}"
 
 #
+#    A prefix path to binary on the target.
+#    bindir	${EXEC_PREFIX}/bin
+#    libdir	${EXEC_PREFIX}/lib
+#
+EXEC_PREFIX="${INSTALL_ROOT_nto}/${cpudir}/${BASIC_PREFIX}"
+
 #    Setup of essential configuration parameters
 #
 function hook_preconfigure {
-#
-#    QNX specific changes are covered by prediefined '__QNX__'
-#
-
 #
 #    Add needed libraries
 #
@@ -40,8 +51,8 @@ function hook_preconfigure {
 #    Setup correct pathes for install and build make commands
 #
     configure_opts="--srcdir=${DIST_BASE}"
-    configure_opts="${configure_opts} --prefix=${INSTALL_ROOT_nto}/usr"
-    configure_opts="${configure_opts} --exec-prefix=${INSTALL_ROOT_nto}/${cpudir}/usr"
+    configure_opts="${configure_opts} --prefix=${PREFIX}"
+    configure_opts="${configure_opts} --exec-prefix=${EXEC_PREFIX}"
 
 
     #deactivate support of pcre2
@@ -232,7 +243,7 @@ function hook_postmake {
     base_tests="${base_build}/${NESTED_LEVEL}/tests"
     base_testsuite_script="base_testsuite.sh"
 
-    testsuite_sdp_bin=${INSTALL_ROOT_nto}/${cpudir}/usr/bin/lighttpd_tests
+    testsuite_sdp_bin=${EXEC_PREFIX}/bin/lighttpd_tests
     tools_bin=tools
 
     pkg_ver=$(grep -P '^.*version\s+=' ${NESTED_LEVEL}/SConstruct | grep -oP '\d+\.\d+\.\d+') || "UNKNOWN"
@@ -274,13 +285,13 @@ function hook_postmake {
             full_path_tools_bin="${testsuite_sdp_bin}/${tools_bin}"
             [ -d ${full_path_tools_bin} ] || (set -x; mkdir -p ${full_path_tools_bin} )
 
-            perl_bin=${INSTALL_ROOT_nto}/${cpudir}/usr/bin/perl
+            perl_bin=${QNX_TARGET}/${cpudir}/usr/bin/perl
             (set -x; cp  -f ${perl_bin} ${full_path_tools_bin}) || Error "perl was not found.";
 
-            perl_lib=${INSTALL_ROOT_nto}/${cpudir}/usr/lib/perl5
+            perl_lib=${QNX_TARGET}/${cpudir}/usr/lib/perl5
             (set -x; cp -rf ${perl_lib} ${full_path_tools_bin}) || Error "perl libs were not found.";
 
-            expr_bin=${INSTALL_ROOT_nto}/${cpudir}/usr/bin/expr
+            expr_bin=${QNX_TARGET}/${cpudir}/usr/bin/expr
             (set -x; cp  -f ${expr_bin} ${full_path_tools_bin}) || Error "expr tool was not found.";
 
             echo "Setup build script ..."

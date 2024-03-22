@@ -24,9 +24,13 @@ lighttpd web server normally wants to be tested on the same machine it was built
 
 - Install com.qnx.qnx800.target.utils.perl QNX package to your SDP
 
-### Build and install all lighttpd tests into SDP
+### Build and install all lighttpd tests
 
 `JLEVEL=$(nproc) CPULIST=x86_64 make -C qnx/build check`
+
+or
+
+`JLEVEL=$(nproc) CPULIST=x86_64 make -C qnx/build check USE_INSTALL_ROOT=true INSTALL_ROOT_nto=<full-path>`
 
 ### Then build your QNX image using mkqnximage and the following options:
 
@@ -34,7 +38,11 @@ lighttpd web server normally wants to be tested on the same machine it was built
 
 `mkdir test_image && cd test_image`
 
-`mkqnximage --extra-dirs=$LIGHTTPD_ROOT/qnx/test/mkqnximage --clean --run --force --test-lighttpd=$QNX_TARGET/x86_64/usr/bin/lighttpd_tests`
+`mkqnximage --extra-dirs=$LIGHTTPD_ROOT/qnx/test/mkqnximage --clean --run --force --test-lighttpd=$QNX_TARGET/x86_64/usr/local/bin/lighttpd_tests`
+
+or
+
+`mkqnximage --extra-dirs=$LIGHTTPD_ROOT/qnx/test/mkqnximage --clean --run --force --test-lighttpd=<full-path>/x86_64/usr/local/bin/lighttpd_tests`
 
 ### Once the target has booted, the lighttpd tests will be located in /data/lighttpd:
 
