@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shiplist>
+	<id>com.qnx.${baselineId}.osr.lighttpd</id>
+	<name>Lighttpd 1.4 web server</name>
+	<version>1.4.73</version>
+	<description>Lighttpd is a secure, fast, compliant, and very flexible web server</description>
+	<property key="f.support" value="Custom"/>
+	<property key="f.swtype" value="III"/>
+	<property key="f.engage" value="B"/>
+	<property key="product">Prebuilt Open Source Packages</property>
+	<category>OSR</category>
+	<packageType>addon</packageType>
+
+	<!-- install dynamic libraries -->
+	<asset dest="${targetfolder}/[ARCH:aarch64le,x86_64]/usr/local/lib/mod_accesslog.so"/>
+	<asset dest="${targetfolder}/[ARCH:aarch64le,x86_64]/usr/local/lib/mod_ajp13.so"/>
+	<asset dest="${targetfolder}/[ARCH:aarch64le,x86_64]/usr/local/lib/mod_authn_file.so"/>
+	<asset dest="${targetfolder}/[ARCH:aarch64le,x86_64]/usr/local/lib/mod_auth.so"/>
+	<asset dest="${targetfolder}/[ARCH:aarch64le,x86_64]/usr/local/lib/mod_cgi.so"/>
+	<asset dest="${targetfolder}/[ARCH:aarch64le,x86_64]/usr/local/lib/mod_deflate.so"/>
+	<asset dest="${targetfolder}/[ARCH:aarch64le,x86_64]/usr/local/lib/mod_dirlisting.so"/>
+	<asset dest="${targetfolder}/[ARCH:aarch64le,x86_64]/usr/local/lib/mod_extforward.so"/>
+	<asset dest="${targetfolder}/[ARCH:aarch64le,x86_64]/usr/local/lib/mod_h2.so"/>
+	<asset dest="${targetfolder}/[ARCH:aarch64le,x86_64]/usr/local/lib/mod_proxy.so"/>
+	<asset dest="${targetfolder}/[ARCH:aarch64le,x86_64]/usr/local/lib/mod_rrdtool.so"/>
+	<asset dest="${targetfolder}/[ARCH:aarch64le,x86_64]/usr/local/lib/mod_sockproxy.so"/>
+	<asset dest="${targetfolder}/[ARCH:aarch64le,x86_64]/usr/local/lib/mod_ssi.so"/>
+	<asset dest="${targetfolder}/[ARCH:aarch64le,x86_64]/usr/local/lib/mod_status.so"/>
+	<asset dest="${targetfolder}/[ARCH:aarch64le,x86_64]/usr/local/lib/mod_userdir.so"/>
+	<asset dest="${targetfolder}/[ARCH:aarch64le,x86_64]/usr/local/lib/mod_vhostdb.so"/>
+	<asset dest="${targetfolder}/[ARCH:aarch64le,x86_64]/usr/local/lib/mod_webdav.so"/>
+	<asset dest="${targetfolder}/[ARCH:aarch64le,x86_64]/usr/local/lib/mod_wstunnel.so"/>
+
+	<!-- install binaries -->
+	<asset dest="${targetfolder}/[ARCH:aarch64le,x86_64]/usr/local/sbin/lighttpd"/>
+	<asset dest="${targetfolder}/[ARCH:aarch64le,x86_64]/usr/local/sbin/lighttpd-angel"/>
+</shiplist>
